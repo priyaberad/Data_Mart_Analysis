@@ -1,0 +1,27 @@
+create table clean_weekly_sale1 as
+select week_date,
+week(week_date) as week_number,
+month(week_date) as month_number,
+year(week_date) as calendar_year,
+  region,
+  platform,
+  case 
+  when segment = 'Null' then 'Unknown'
+  else segment
+  end as segment,
+  case 
+  when right (segment,1)= '1' then 'Young Adults'
+  when right (segment,1)= '2' then 'Middle Aged'
+  when right (segment,1)= '3' then 'Retirees'
+  else 'Unknown'
+  end as age_band,
+  case
+  when left (segment,1) = 'C' then 'Couples'
+  when left (segment,1) = 'F' then 'Families'
+  else 'Unknown'
+  end as demographic ,
+  customer_type,
+  transactions,
+  sales,
+  round(sales/transactions,2) as avg_transaction
+  from weekly_sales 
